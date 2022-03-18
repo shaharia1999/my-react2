@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import {useEffect, useState } from 'react';
 
 function App() {
   const products=[
@@ -21,6 +21,7 @@ function App() {
 
       <Counter></Counter>
       <External></External>
+      <User></User>
     </div>
   );
 }
@@ -54,10 +55,27 @@ function Counter(){
 }
 function External(){
     const[users, setUsers]=useState([]);
+    useEffect(()=>{
+      fetch('https://jsonplaceholder.typicode.com/users')
+      .then(respons=>respons.json())
+       .then(data=>setUsers(data))
+    },[])
+ 
    
   return(
     <div>
-      <h1>External User :</h1>
+      {
+        users.map(user=><User name={user.name} email={user.email}></User>)
+      }
+      <h1>External User </h1>
+    </div>
+  )
+}
+function User(props){
+  return(
+    <div>
+      <h2>{props.name}</h2>
+      <h2>{props.email}</h2>
     </div>
   )
 }
